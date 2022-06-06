@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 
 //jsx -> react를 만드는 페이스북 팀에서 사용자 정의 태그를 만들때 return 후 tag를 명시할때 따옴표를 사용하지 않도록 js를 확장한 언어이다.
-function HeaderTag() {
+function Header() {
   return (
     <header>
       <h1>
@@ -12,7 +12,7 @@ function HeaderTag() {
   );
 }
 
-function NavTag() {
+function Nav() {
   return (
     <nav>
       <ol>
@@ -30,7 +30,7 @@ function NavTag() {
   );
 }
 
-function ArticleTag() {
+function Article() {
   return (
     <article>
       <h2>Welcome</h2>
@@ -53,9 +53,9 @@ function App() {
     //   </header>
     // </div>
     <div>
-      <HeaderTag></HeaderTag>
-      <NavTag></NavTag>
-      <ArticleTag></ArticleTag>
+      <Header></Header>
+      <Nav></Nav>
+      <Article></Article>
     </div>
   );
 }

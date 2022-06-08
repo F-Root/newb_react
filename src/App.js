@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
@@ -31,7 +32,7 @@ function Nav(props) {
           href={'/read/' + el.id}
           onClick={(evt) => {
             evt.preventDefault();
-            props.onSelect();
+            props.onSelect(el.id);
           }}
         >
           {el.title}
@@ -79,11 +80,27 @@ function Article(props) {
 }
 
 function App() {
+  const [mode, setMode] = useState('WELCOME');
+  const [id, setId] = useState(null);
+  console.log(mode, id);
+
   const topics = [
     { id: 1, title: 'html', body: 'html is ...' },
     { id: 2, title: 'css', body: 'css is ...' },
     { id: 3, title: 'javascript', body: 'javascript is ...' },
   ];
+
+  let content = null;
+  if (mode === 'WELCOME') {
+    content = <Article title='Welcome' body='Hello, WEB!'></Article>;
+  } else if (mode === 'READ') {
+    const topic = topics.filter((el) => {
+      if (el.id === id) return true;
+      else return false;
+    })[0];
+    console.log('topic', topic);
+    content = <Article title={topic.title} body={topic.body}></Article>;
+  }
 
   function createHandler() {
     alert('created!');
@@ -93,16 +110,20 @@ function App() {
       <Header
         onSelect={() => {
           alert('Header!!!');
+          setMode('WELCOME');
         }}
       ></Header>
       <Nav
         data={topics}
-        onSelect={() => {
-          alert('Nav!!!');
+        onSelect={(id) => {
+          alert('Nav!!!,' + id);
+          setMode('READ');
+          setId(id);
         }}
       ></Nav>
-      <Article title='Welcome' body='Hello, WEB!'></Article>
-      <Article title='HTML' body='HTML is ...'></Article>
+      {/* <Article title='Welcome' body='Hello, WEB!'></Article>
+      <Article title='HTML' body='HTML is ...'></Article> */}
+      {content}
       {/* <img src=''></img> */}
       <a href='http://info.cern.ch'>Web</a>
       <br />

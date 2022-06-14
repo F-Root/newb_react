@@ -1,22 +1,24 @@
-import './App.css';
+// import './App.css';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import styled from 'styled-components';
 
 //jsx -> react를 만드는 페이스북 팀에서 사용자 정의 태그를 만들때 return 후 tag를 명시할때 따옴표를 사용하지 않도록 js를 확장한 언어이다.
 function Header(props) {
-  const myStyle = {
-    borderBottom: '1px solid gray',
-    padding: '10px',
-    fontSize: '20px',
-  };
+  // const myStyle = {
+  //   borderBottom: '1px solid gray',
+  //   padding: '10px',
+  //   fontSize: '20px',
+  // };
+  console.log('Header', props);
   return (
-    <header style={myStyle}>
+    // <header style={myStyle}>
+    <header className={props.className}>
       <h1>
         <a
           href='/'
           onClick={(evt) => {
-            console.log('evt', evt);
             evt.preventDefault();
             props.onSelect();
           }}
@@ -27,6 +29,12 @@ function Header(props) {
     </header>
   );
 }
+
+const HeaderStyled = styled(Header)`
+  border-bottom: 1px solid gray;
+  padding: 10px;
+  font-size: 20px;
+`;
 
 function Nav(props) {
   const list = props.data.map((el) => {
@@ -89,12 +97,12 @@ function App() {
   }
   return (
     <div>
-      <Header
+      <HeaderStyled
         onSelect={() => {
           alert('Header!!!');
           setMode('WELCOME');
         }}
-      ></Header>
+      ></HeaderStyled>
       <Nav
         data={topics}
         onSelect={(id) => {

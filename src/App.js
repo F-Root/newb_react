@@ -40,31 +40,9 @@ function Nav(props) {
       </li>
     );
   });
-  // const list = [
-  //   <li>
-  //     <a href='/read/1'>html</a>
-  //   </li>,
-  //   <li>
-  //     <a href='/read/2'>css</a>
-  //   </li>,
-  //   <li>
-  //     <a href='/read/3'>javaScript</a>
-  //   </li>,
-  // ];
   return (
     <nav>
-      <ol>
-        {/* <li>
-          <a href='/read/1'>html</a>
-        </li>
-        <li>
-          <a href='/read/2'>css</a>
-        </li>
-        <li>
-          <a href='/read/3'>javaScript</a>
-        </li> */}
-        {list}
-      </ol>
+      <ol>{list}</ol>
     </nav>
   );
 }

@@ -168,15 +168,17 @@ function App() {
         <Button
           variant='outlined'
           onClick={() => {
-            const newTopics = topics.filter((e) => {
-              if (e.id === id) {
-                return false;
-              } else {
-                return true;
-              }
-            });
-            setTopics(newTopics);
-            setMode('WELCOME');
+            // const newTopics = topics.filter((e) => {
+            //   if (e.id === id) {
+            //     return false;
+            //   } else {
+            //     return true;
+            //   }
+            // });
+            // setTopics(newTopics); //비동기 처리
+            setMode('WELCOME'); //동기식이었다면 setMode를 먼저 호출해 준다음에 setTopics를 호출해야 결과가 제대로 나옴.
+
+            setTopics((curr) => curr.filter((e) => e.id !== id));
           }}
         >
           Delete

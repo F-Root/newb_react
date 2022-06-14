@@ -165,7 +165,22 @@ function App() {
           Create
         </Button>
         <Button variant='outlined'>Update</Button>
-        <Button variant='outlined'>Delete</Button>
+        <Button
+          variant='outlined'
+          onClick={() => {
+            const newTopics = topics.filter((e) => {
+              if (e.id === id) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+            setTopics(newTopics);
+            setMode('WELCOME');
+          }}
+        >
+          Delete
+        </Button>
       </ButtonGroup>
     </div>
   );

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 //jsx -> react를 만드는 페이스북 팀에서 사용자 정의 태그를 만들때 return 후 tag를 명시할때 따옴표를 사용하지 않도록 js를 확장한 언어이다.
 function Header(props) {
@@ -11,20 +12,19 @@ function Header(props) {
   //   padding: '10px',
   //   fontSize: '20px',
   // };
-  console.log('Header', props);
   return (
     // <header style={myStyle}>
     <header className={props.className}>
       <h1>
-        <a
-          href='/'
+        <Link
+          to='/'
           onClick={(evt) => {
-            evt.preventDefault();
+            // evt.preventDefault();
             props.onSelect();
           }}
         >
           Web
-        </a>
+        </Link>
       </h1>
     </header>
   );
@@ -40,15 +40,15 @@ function Nav(props) {
   const list = props.data.map((el) => {
     return (
       <li key={el.id}>
-        <a
-          href={'/read/' + el.id}
+        <Link
+          to={'/read/' + el.id}
           onClick={(evt) => {
-            evt.preventDefault();
+            // evt.preventDefault();
             props.onSelect(el.id);
           }}
         >
           {el.title}
-        </a>
+        </Link>
       </li>
     );
   });
@@ -124,6 +124,7 @@ function App() {
           const newTopic = { id: nextId, title, body };
           const newTopics = [...topics];
           newTopics.push(newTopic);
+          //const newTopics = [...topics, newTopic];
           setTopics(newTopics);
           setId(nextId);
           setMode('READ');
@@ -157,6 +158,8 @@ function App() {
       <br />
       <ButtonGroup>
         <Button
+          component={Link}
+          to='/create'
           variant='outlined'
           onClick={() => {
             setMode('CREATE');

@@ -1,5 +1,5 @@
 // import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import styled from 'styled-components';
@@ -66,6 +66,15 @@ function App() {
     { id: 2, title: 'css', body: 'css is ...' },
     { id: 3, title: 'javascript', body: 'javascript is ...' },
   ]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch('http://localhost:3333/topics');
+      const data = await response.json();
+      setTopics(data);
+    })();
+  }, []);
+
   const navigate = useNavigate();
 
   return (

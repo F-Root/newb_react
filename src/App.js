@@ -18,11 +18,21 @@ const HeaderStyled = styled(Header)`
 function Read(props) {
   const params = useParams();
   const id = Number(params.id);
+  const [topic, setTopic] = useState({ title: null, body: null });
 
-  const topic = props.topics.filter((el) => {
-    if (el.id === id) return true;
-    else return false;
-  })[0];
+  useEffect(() => {
+    (async () => {
+      const response = await fetch('http://localhost:3333/topics/' + id);
+      const data = await response.json();
+      setTopic(data);
+    })();
+  }, [id]);
+
+  // const topic = props.topics.filter((el) => {
+  //   if (el.id === id) return true;
+  //   else return false;
+  // })[0];
+
   return <Article title={topic.title} body={topic.body}></Article>;
 }
 
@@ -67,12 +77,14 @@ function App() {
     { id: 3, title: 'javascript', body: 'javascript is ...' },
   ]);
 
+  const refreshTopics = async () => {
+    const response = await fetch('http://localhost:3333/topics');
+    const data = await response.json();
+    setTopics(data);
+  };
+
   useEffect(() => {
-    (async () => {
-      const response = await fetch('http://localhost:3333/topics');
-      const data = await response.json();
-      setTopics(data);
-    })();
+    refreshTopics();
   }, []);
 
   const navigate = useNavigate();
@@ -83,7 +95,7 @@ function App() {
       <Nav data={topics} onSelect={navHandler()}></Nav>
       <Routes>
         <Route path='/' element={<Article title='Welcome' body='Hello, WEB!'></Article>}></Route>
-        <Route path='/create' element={<Create onCreate={onCreateHandler()}></Create>}></Route>
+        <Route path='/create' element={<Create onCreate={onCreateHandler}></Create>}></Route>
         <Route path='/read/:id' element={<Read topics={topics}></Read>}></Route>
       </Routes>
       {/* <a href='http://info.cern.ch'>Web</a> */}
@@ -109,30 +121,20 @@ function App() {
     </div>
   );
 
-  function onCreateHandler() {
-    return (title, body) => {
-      const newTopic = { id: nextId, title, body };
-      const newTopics = [...topics];
-      newTopics.push(newTopic);
-      //const newTopics = [...topics, newTopic];
-      setTopics(newTopics);
-      setId(nextId);
-      setMode('READ');
-      setNextId(nextId + 1);
-    };
+  async function onCreateHandler(title, body) {
+    const response = await fetch('http://localhost:3333/topics', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, body }),
+    });
+    const data = await response.json();
+    navigate(`/read/${data.id}`);
+    refreshTopics();
   }
 
   function deleteHandler(id) {
-    // const newTopics = topics.filter((e) => {
-    //   if (e.id === id) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // });
-    // setTopics(newTopics); //비동기 처리
-    // setMode('WELCOME'); //동기식이었다면 setMode를 먼저 호출해 준다음에 setTopics를 호출해야 결과가 제대로 나옴.
-
     setTopics((curr) => curr.filter((e) => e.id !== id));
     navigate('/');
   }

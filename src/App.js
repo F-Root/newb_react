@@ -26,6 +26,29 @@ function Read(props) {
   return <Article title={topic.title} body={topic.body}></Article>;
 }
 
+function Control(props) {
+  const params = useParams();
+  const id = Number(params.id);
+
+  let contextUI = null;
+  if (id) {
+    contextUI = (
+      <>
+        <Button variant='outlined'>Update</Button>
+        <Button variant='outlined'>Delete</Button>
+      </>
+    );
+  }
+  return (
+    <>
+      <Button component={Link} to='/create' variant='outlined'>
+        Create
+      </Button>
+      {contextUI}
+    </>
+  );
+}
+
 function App() {
   const [mode, setMode] = useState('WELCOME'); // todo 삭제 예정
   const [id, setId] = useState(null); // todo 삭제 예정
@@ -46,17 +69,14 @@ function App() {
         <Route path='/create' element={<Create onCreate={onCreateHandler()}></Create>}></Route>
         <Route path='/read/:id' element={<Read topics={topics}></Read>}></Route>
       </Routes>
-      <a href='http://info.cern.ch'>Web</a>
+      {/* <a href='http://info.cern.ch'>Web</a> */}
       <br />
-      <ButtonGroup>
-        <Button component={Link} to='/create' variant='outlined' onClick={createHandler()}>
-          Create
-        </Button>
-        <Button variant='outlined'>Update</Button>
-        <Button variant='outlined' onClick={deleteHandler()}>
-          Delete
-        </Button>
-      </ButtonGroup>
+
+      <Routes>
+        {['/', '/read/:id', '/update/:id'].map((path) => {
+          return <Route key={path} path={path} element={<Control></Control>}></Route>;
+        })}
+      </Routes>
     </div>
   );
 
@@ -91,7 +111,7 @@ function App() {
 
   function navHandler() {
     return (id) => {
-      alert('Nav!!!,' + id);
+      // alert('Nav!!!,' + id);
       setMode('READ');
       setId(id);
     };
@@ -105,7 +125,7 @@ function App() {
 
   function headerHandler() {
     return () => {
-      alert('Header!!!');
+      // alert('Header!!!');
       setMode('WELCOME');
     };
   }

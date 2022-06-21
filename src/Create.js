@@ -5,7 +5,7 @@ export function Create(props) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          alert('submit');
+          // alert('submit');
           const title = e.target.title.value;
           const body = e.target.body.value;
           props.onCreate(title, body);

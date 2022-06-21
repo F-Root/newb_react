@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import styled from 'styled-components';
-import { Link, Routes, Route, useParams } from 'react-router-dom';
+import { Link, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { Header } from './Header';
 import { Nav } from './Nav';
 import { Article } from './Article';
@@ -35,7 +35,14 @@ function Control(props) {
     contextUI = (
       <>
         <Button variant='outlined'>Update</Button>
-        <Button variant='outlined'>Delete</Button>
+        <Button
+          variant='outlined'
+          onClick={() => {
+            props.onDelete(id);
+          }}
+        >
+          Delete
+        </Button>
       </>
     );
   }
@@ -59,6 +66,7 @@ function App() {
     { id: 2, title: 'css', body: 'css is ...' },
     { id: 3, title: 'javascript', body: 'javascript is ...' },
   ]);
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -74,7 +82,19 @@ function App() {
 
       <Routes>
         {['/', '/read/:id', '/update/:id'].map((path) => {
-          return <Route key={path} path={path} element={<Control></Control>}></Route>;
+          return (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <Control
+                  onDelete={(id) => {
+                    deleteHandler(id);
+                  }}
+                ></Control>
+              }
+            ></Route>
+          );
         })}
       </Routes>
     </div>
@@ -93,20 +113,19 @@ function App() {
     };
   }
 
-  function deleteHandler() {
-    return () => {
-      // const newTopics = topics.filter((e) => {
-      //   if (e.id === id) {
-      //     return false;
-      //   } else {
-      //     return true;
-      //   }
-      // });
-      // setTopics(newTopics); //비동기 처리
-      setMode('WELCOME'); //동기식이었다면 setMode를 먼저 호출해 준다음에 setTopics를 호출해야 결과가 제대로 나옴.
+  function deleteHandler(id) {
+    // const newTopics = topics.filter((e) => {
+    //   if (e.id === id) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // });
+    // setTopics(newTopics); //비동기 처리
+    // setMode('WELCOME'); //동기식이었다면 setMode를 먼저 호출해 준다음에 setTopics를 호출해야 결과가 제대로 나옴.
 
-      setTopics((curr) => curr.filter((e) => e.id !== id));
-    };
+    setTopics((curr) => curr.filter((e) => e.id !== id));
+    navigate('/');
   }
 
   function navHandler() {

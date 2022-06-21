@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Routes, Route, useParams } from 'react-router-dom';
 import { Header } from './Header';
 import { Nav } from './Nav';
 import { Article } from './Article';
@@ -30,37 +30,18 @@ function App() {
   if (mode === 'WELCOME') {
     content = <Article title='Welcome' body='Hello, WEB!'></Article>;
   } else if (mode === 'READ') {
-    const topic = topics.filter((el) => {
-      if (el.id === id) return true;
-      else return false;
-    })[0];
-    console.log('topic', topic);
-    content = <Article title={topic.title} body={topic.body}></Article>;
   } else if (mode === 'CREATE') {
-    content = (
-      <Create
-        onCreate={(title, body) => {
-          const newTopic = { id: nextId, title, body };
-          const newTopics = [...topics];
-          newTopics.push(newTopic);
-          //const newTopics = [...topics, newTopic];
-          setTopics(newTopics);
-          setId(nextId);
-          setMode('READ');
-          setNextId(nextId + 1);
-        }}
-      ></Create>
-    );
   }
 
   return (
     <div>
       <HeaderStyled onSelect={headerHandler()}></HeaderStyled>
       <Nav data={topics} onSelect={navHandler()}></Nav>
-      {/* <Article title='Welcome' body='Hello, WEB!'></Article>
-      <Article title='HTML' body='HTML is ...'></Article> */}
-      {content}
-      {/* <img src=''></img> */}
+      <Routes>
+        <Route path='/' element={<Article title='Welcome' body='Hello, WEB!'></Article>}></Route>
+        <Route path='/create' element={<Create onCreate={onCreateHandler()}></Create>}></Route>
+        <Route path='/read/:id' element={<Read topics={topics}></Read>}></Route>
+      </Routes>
       <a href='http://info.cern.ch'>Web</a>
       <br />
       <ButtonGroup>
@@ -74,6 +55,30 @@ function App() {
       </ButtonGroup>
     </div>
   );
+
+  function Read(props) {
+    const params = useParams();
+    const id = Number(params.id);
+
+    const topic = props.topics.filter((el) => {
+      if (el.id === id) return true;
+      else return false;
+    })[0];
+    return <Article title={topic.title} body={topic.body}></Article>;
+  }
+
+  function onCreateHandler() {
+    return (title, body) => {
+      const newTopic = { id: nextId, title, body };
+      const newTopics = [...topics];
+      newTopics.push(newTopic);
+      //const newTopics = [...topics, newTopic];
+      setTopics(newTopics);
+      setId(nextId);
+      setMode('READ');
+      setNextId(nextId + 1);
+    };
+  }
 
   function deleteHandler() {
     return () => {

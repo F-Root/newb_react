@@ -16,8 +16,8 @@ const HeaderStyled = styled(Header)`
 `;
 
 function App() {
-  const [mode, setMode] = useState('WELCOME');
-  const [id, setId] = useState(null);
+  const [mode, setMode] = useState('WELCOME'); // todo 삭제 예정
+  const [id, setId] = useState(null); // todo 삭제 예정
   const [nextId, setNextId] = useState(4);
 
   const [topics, setTopics] = useState([
@@ -25,13 +25,6 @@ function App() {
     { id: 2, title: 'css', body: 'css is ...' },
     { id: 3, title: 'javascript', body: 'javascript is ...' },
   ]);
-
-  let content = null;
-  if (mode === 'WELCOME') {
-    content = <Article title='Welcome' body='Hello, WEB!'></Article>;
-  } else if (mode === 'READ') {
-  } else if (mode === 'CREATE') {
-  }
 
   return (
     <div>

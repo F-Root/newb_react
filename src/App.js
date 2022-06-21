@@ -15,6 +15,17 @@ const HeaderStyled = styled(Header)`
   font-size: 20px;
 `;
 
+function Read(props) {
+  const params = useParams();
+  const id = Number(params.id);
+
+  const topic = props.topics.filter((el) => {
+    if (el.id === id) return true;
+    else return false;
+  })[0];
+  return <Article title={topic.title} body={topic.body}></Article>;
+}
+
 function App() {
   const [mode, setMode] = useState('WELCOME'); // todo 삭제 예정
   const [id, setId] = useState(null); // todo 삭제 예정
@@ -48,17 +59,6 @@ function App() {
       </ButtonGroup>
     </div>
   );
-
-  function Read(props) {
-    const params = useParams();
-    const id = Number(params.id);
-
-    const topic = props.topics.filter((el) => {
-      if (el.id === id) return true;
-      else return false;
-    })[0];
-    return <Article title={topic.title} body={topic.body}></Article>;
-  }
 
   function onCreateHandler() {
     return (title, body) => {
